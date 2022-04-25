@@ -1,15 +1,19 @@
 <section>
-  <div class="container mt-5">
+   <div class="container mt-5">
     <div class="row">
-      {{#each products}}
-      <div class="col-md-3">
-        <div class="card mt-3 xzoom  text-center bg-light" style="width: 18rem;height:30rem;border-radius: 1rem">
-
-          <a href="/view-image/{{this._id}}">
-            <img src="/product-images/{{this._id}}.jpg" style="width: 200px;height:250px" class="card-img-top mx-auto"
-              alt="..."></a>
-          <div class="">
-            <p><span class="text-muted ms-3">{{this.brand}}</span><br>
+        {{#each products}}
+        <div class="col-md-4 col-sm-6">
+            <div class="product-grid" style="width: 18rem; height:auto">
+                <div class="product-image" >
+                    <a href="/view-image/{{this._id}}" class="image">
+                        <img class="pic-1" src="/product-images/{{this._id}}.jpg" style="width: 16rem; height:18rem">
+                        <img class="pic-2" src="/product-images1/{{this._id}}.jpg" style="width: 16rem; height:18rem">
+                    </a>
+                  
+                    <span class="product-discount-label" style="background-color: #000000;" >{{this.offerpercentage}}% off</span>
+                </div>
+                <div class="product-content">
+                    <p><span class="text-muted ms-3">{{this.brand}}</span><br>
               <span>{{this.description}}</span>
 
               <br><span><span class="text-success fs-5">₹{{this.offerPrice}} </span>orginal price <span
@@ -17,24 +21,36 @@
               <br><span class="fs-5"><span class=" fs-5">{{this.offerpercentage}}% off</span><br>Hurry, Only 7
                 left!</span>
             </p>
-
-
-            <p class="text-center">
-              <a href="#" class="btn btn-primary  ">ADD CART</a>
-            </p>
-
-
-          </div>
+                    <h3 class="title"><a href="#">{{this.brand}}</a></h3>
+                    <div class="price"><span> ₹{{this.orginalPrice}}</span> ₹{{this.offerPrice}}</div>
+                    <div class="product-button-group">
+                        <a class="product-like-icon" href="#"><i class="fas fa-heart"></i></a>
+                        <a class="add-to-cart" onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-bag"></i>ADD TO CART</a>
+                        <a class="product-compare-icon" href="#"><i class="fas fa-random"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
-   
+        {{/each}}
+        </div>
+        </div>
 
-
-
-
-      {{/each}}
-    </div>
-  </div>
-
-    
 </section>
 
+
+<script>
+        function addToCart(proId){
+            $.ajax({
+                url:'/add-to-cart/'+proId,
+                method:'get',
+                success:(response)=>{
+                    if(response.status){
+                        let count=$('#cartCount').html()
+                        count=parseInt(count)+1
+                        $("#cartCount").html(count)
+                    }
+                    
+                }
+            })
+        }
+    </script>
